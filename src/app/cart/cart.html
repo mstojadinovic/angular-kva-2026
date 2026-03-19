@@ -1,0 +1,139 @@
+<div style="padding: 20px;">
+    <mat-card class="mb-10">
+        <mat-card-header>
+            <h1>Moja Korpa / Istorija narudžbina</h1>
+        </mat-card-header>
+
+        <mat-card-content style="margin-top: 20px;">
+            @if (getOrders().length > 0) {
+                <table mat-table [dataSource]="getOrders()" class="mat-elevation-z0" style="width: 100%; background-color: transparent !important;">
+
+                    <ng-container matColumnDef="slika">
+                        <th mat-header-cell *matHeaderCellDef> Slika </th>
+                        <td mat-cell *matCellDef="let toy">
+                            <img [src]="'https://toy.pequla.com' + toy.imageUrl" 
+                                 style="height: 40px; width: 40px; object-fit: contain;">
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ime">
+                        <th mat-header-cell *matHeaderCellDef> Naziv </th>
+                        <td mat-cell *matCellDef="let toy"> <strong>{{toy.name}}</strong> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="opis">
+                        <th mat-header-cell *matHeaderCellDef> Opis </th>
+                        <td mat-cell *matCellDef="let toy" style="max-width: 120px; color: #888; font-style: italic; font-size: 11px;">
+                            {{toy.description}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ocena">
+                        <th mat-header-cell *matHeaderCellDef> Ocena </th>
+                        <td mat-cell *matCellDef="let toy">
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <div style="display: flex; align-items: center; gap: 2px;">
+                                    @for (star of [1, 2, 3, 4, 5]; track star) {
+                                        <mat-icon 
+                                            (click)="rateToy(toy, star)"
+                                            [style.cursor]="toy.status === 'pristiglo' ? 'pointer' : 'default'"
+                                            [style.color]="(toy.rating ?? 3) >= star ? '#ffc107' : '#e0e0e0'"
+                                            style="font-size: 18px; width: 18px; height: 18px;">
+                                            {{ (toy.rating ?? 3) >= star ? 'star' : 'star_border' }}
+                                        </mat-icon>
+                                    }
+                                </div>
+                                <span style="font-size: 11px; font-weight: bold; margin-left: 2px;"
+                                      [style.color]="(toy.rating ?? 3) >= 3 ? '#2e7d32' : '#d32f2f'">
+                                    {{ (toy.rating ?? 3) | number:'1.1-1' }} / 5.0
+                                </span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kategorija">
+                        <th mat-header-cell *matHeaderCellDef> Kategorija </th>
+                        <td mat-cell *matCellDef="let toy" style="font-size: 11px;">
+                            <strong>{{toy.type?.name}}</strong><br>{{toy.age?.name}} god.
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="datum">
+                        <th mat-header-cell *matHeaderCellDef> Proizvedeno </th>
+                        <td mat-cell *matCellDef="let toy" style="font-size: 11px; color: #666;">
+                            {{toy.productionDate | date:'dd.MM.yyyy'}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="namenjeno">
+                        <th mat-header-cell *matHeaderCellDef> Namenjeno </th>
+                        <td mat-cell *matCellDef="let toy" style="font-size: 11px; font-weight: 500;"
+                            [style.color]="toy.targetGroup === 'male' ? '#1976d2' : (toy.targetGroup === 'female' ? '#e91e63' : '#2e7d32')">
+                            {{toy.targetGroup === 'male' ? 'Dečaci' : (toy.targetGroup === 'female' ? 'Devojčice' : 'Univerzalno')}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kolicina">
+                        <th mat-header-cell *matHeaderCellDef> Količina </th>
+                        <td mat-cell *matCellDef="let toy">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <button mat-icon-button (click)="decrementCount(toy)" [disabled]="toy.status === 'pristiglo'" style="height: 30px;">
+                                    <mat-icon style="font-size: 18px;">remove_circle_outline</mat-icon>
+                                </button>
+                                <span style="font-weight: bold; min-width: 15px; text-align: center;">{{toy.count || 1}}</span>
+                                <button mat-icon-button (click)="incrementCount(toy)" [disabled]="toy.status === 'pristiglo'" style="width: 30px; height: 30px;">
+                                    <mat-icon style="font-size: 18px;">add_circle_outline</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let toy">
+                            <span [style.color]="toy.status === 'rezervisano' ? '#f57c00' : '#2e7d32'" 
+                                  style="font-weight: bold; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">
+                                {{toy.status}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cena">
+                        <th mat-header-cell *matHeaderCellDef> Ukupno </th>
+                        <td mat-cell *matCellDef="let toy" style="font-weight: bold; white-space: nowrap;"> 
+                            {{toy.price * (toy.count || 1) | number}} RSD 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="opcije">
+                        <th mat-header-cell *matHeaderCellDef> Opcije </th>
+                        <td mat-cell *matCellDef="let toy">
+                            <button mat-icon-button color="warn" (click)="removeOrder(toy)" [disabled]="toy.status === 'pristiglo'">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+                    <h2 style="margin: 0;">Ukupno za uplatu: <span style="color: #d32f2f;">{{calculateTotal() | number}} RSD</span></h2>
+                    <div>
+                        <button matButton color="accent" (click)="simulateArrival()" style="margin-right: 10px;">Isporuči</button>
+                    </div>
+                </div>
+
+            } @else {
+                <div style="text-align: center; padding: 50px;">
+                    <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: #ccc;">shopping_cart_off</mat-icon>
+                    <h3 style="color: #666;">Vaša korpa je trenutno prazna.</h3>
+                    <button matButton color="primary" routerLink="/">Vrati se na prodavnicu</button>
+                </div>
+            }
+        </mat-card-content>
+    </mat-card>
+</div>

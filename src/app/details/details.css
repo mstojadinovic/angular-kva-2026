@@ -1,0 +1,15 @@
+.details-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.details-card{
+    width: 560px;
+}
+
+.details-img {
+    max-width: 100%;
+}
+

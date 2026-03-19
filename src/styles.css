@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+.gap-5 {
+    gap: 5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.small-card {
+    max-width: 460px;
+}
+
+.flex-card {
+    min-width: 340px;
+    max-width: 460px;
+    width: 100%;
+}
+
+.mat-swal-popup {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.mat-swal-title {
+    font-weight: 500;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+}
+
+.mat-swal-actions {
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.mat-swal-cancel {
+    background: var(--mat-sys-secondary) !important;
+    color: var(--mat-sys-on-secondary) !important;
+}
+
+.mat-swal-confirm {
+    background: var(--mat-sys-primary) !important;
+    color: var(--mat-sys-on-primary) !important;
+}

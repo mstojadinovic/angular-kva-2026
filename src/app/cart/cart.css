@@ -1,0 +1,32 @@
+/* Razmaci za kartice */
+.mb-10 {
+    margin: 15px;
+    border-radius: 8px;
+}
+
+/* Tabela preko celog ekrana */
+table {
+    width: 100%;
+}
+
+/* Slike u tabeli */
+td.mat-column-slika img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+/* Istaknut naslov */
+mat-card-header h1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Ukupna cena */
+h3 {
+    font-size: 22px;
+    color: #2196F3;
+}

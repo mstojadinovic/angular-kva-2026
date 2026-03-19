@@ -1,0 +1,104 @@
+<div class="d-flex gap-10">
+    
+    <mat-card class="flex-card">
+        <mat-card-header>
+            <h1>Detalji korisnika</h1>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-form-field class="full-width">
+                <mat-label>Ime</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input matInput type="text" [(ngModel)]="activeUser!.firstName" name="firstName">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Prezime</mat-label>
+                <mat-icon matPrefix>badge</mat-icon>
+                <input matInput type="text" [(ngModel)]="activeUser!.lastName" name="lastName">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Adresa</mat-label>
+                <mat-icon matPrefix>home</mat-icon>
+                <input matInput type="text" [(ngModel)]="activeUser!.address" name="address">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Telefon</mat-label>
+                <mat-icon matPrefix>phone</mat-icon>
+                <input matInput type="text" [(ngModel)]="activeUser!.phone" name="phone">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Omiljena igračka</mat-label>
+                <mat-icon matPrefix>toys</mat-icon>
+                <mat-select [(ngModel)]="activeUser!.favouriteToy" name="favouriteToy">
+                    
+                    <mat-option [value]="''">-- Nema omiljene --</mat-option>
+                    
+                    @for (toy of favourites(); track toy) {
+                        <mat-option [value]="toy">{{toy}}</mat-option>
+                    }
+
+                    @if (favourites().length === 0) {
+                        <mat-option disabled>Trenutno nema dostupnih igračaka</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button type="button" matButton color="primary" (click)="updateUser()">
+                <mat-icon>save</mat-icon> Sačuvajte promene
+            </button>
+        </mat-card-actions>
+    </mat-card>
+
+    <div class="d-flex gap-10 flex-card" style="flex-direction: column;">
+        
+        <mat-card class="flex-card user-details">
+            <mat-card-header>
+                <h1>Generalne informacije</h1>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="d-flex gap-10 user-info">
+                    <img [src]="getAvatarUrl()" class="user-img" alt="Korisnički avatar">
+                    <h3>{{activeUser!.email}}</h3>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="flex-card">
+            <mat-card-header>
+                <h1>Promenite lozinku</h1>
+            </mat-card-header>
+
+            <mat-card-content>
+                <mat-form-field class="full-width">
+                    <mat-label>Stara lozinka</mat-label>
+                    <mat-icon matPrefix>lock_open</mat-icon>
+                    <input matInput type="password" [(ngModel)]="oldPassword" name="oldPass">
+                </mat-form-field>
+                
+                <mat-form-field class="full-width">
+                    <mat-label>Nova lozinka</mat-label>
+                    <mat-icon matPrefix>lock</mat-icon>
+                    <input matInput type="password" [(ngModel)]="newPassword" name="newPass">
+                </mat-form-field>
+                
+                <mat-form-field class="full-width">
+                    <mat-label>Ponovite novu lozinku</mat-label>
+                    <mat-icon matPrefix>key</mat-icon>
+                    <input matInput type="password" [(ngModel)]="passRepeat" name="repeatPass">
+                </mat-form-field>
+            </mat-card-content>
+            
+            <mat-card-actions>
+                <button type="button" matButton color="accent" (click)="updatePassword()">
+                    <mat-icon>password</mat-icon> Ažurirajte lozinku
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

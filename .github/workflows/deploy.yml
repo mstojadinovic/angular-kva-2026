@@ -1,0 +1,36 @@
+name: Deploy KVA 2026
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Latest Node
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+          cache: 'npm'
+
+      - run: bun add -g @angular/cli
+      - run: bun install
+      - run: bun run build
+
+      - name: Setup 404 Routing
+        run: cd ../klijentske-veb-aplikacije-2026/browser && cp index.html 404.html
+
+      - name: Deploy to Branch
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages
+          folder: dist/klijentske-veb-aplikacije-2026/browser

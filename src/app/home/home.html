@@ -1,13 +1,97 @@
-<ul>
-    @for (t of toys(); track $index){
-    <li>
-        <h3>{{t.name}}</h3>
-        <ul>
-            <li>ID: <strong>{{t.toyId}}</strong></li>
-            <li>Deskripcija: <strong>{{t.description}}</strong></li>
-            <li>Targentna grupa: <strong>{{t.targetGroup}}</strong></li>
-            <li>Cena: <strong>{{t.price}}</strong></li>
-        </ul>
-    </li>
+@if(allToys.length > 0) {
+
+<div class="d-flex gap-10">
+
+    <mat-form-field>
+        <mat-label>Pretražite</mat-label>
+        <input matInput [(ngModel)]="pretraga" (ngModelChange)="0">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Ocena</mat-label>
+        <mat-select [(ngModel)]="minOcena">
+            <mat-option [value]="3">3+ ★</mat-option>
+            <mat-option [value]="4">4+ ★</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Tip</mat-label>
+        <mat-select [(ngModel)]="izabraniTip" (selectionChange)="0">
+            @for (tip of getTipovi(); track tip) {
+            <mat-option [value]="tip">{{tip}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Uzrast</mat-label>
+        <mat-select [(ngModel)]="izabraniUzrast" (selectionChange)="0">
+            @for (u of getUzrastSaSlikom(); track u.id) {
+            <mat-option [value]="u.id">
+                <mat-icon>{{u.ikona}}</mat-icon> {{u.label}}
+            </mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Ciljna grupa</mat-label>
+        <mat-select [(ngModel)]="izabraniPol" (selectionChange)="0">
+            <mat-option value="male">Dečaci</mat-option>
+            <mat-option value="female">Devojčice</mat-option>
+            <mat-option value="unisex">Univerzalno</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Cena</mat-label>
+        <input matInput type="text" [(ngModel)]="maksCena" placeholder="npr. 1500">
+    </mat-form-field>
+
+    <button mat-icon-button (click)="ponistiSve()">
+        <mat-icon>filter_alt_off</mat-icon>
+    </button>
+</div>
+
+&nbsp;
+
+<div class="card-wrapper">
+    @for (t of filtriraneIgracke; track t.toyId){
+    <mat-card class="toy-card">
+
+        <img mat-card-image [src]="'https://toy.pequla.com' + t.imageUrl" alt="{{t.name}}">
+
+        <mat-card-content>
+            <h2 class="title">{{t.name}}</h2>
+
+            <div style="color: #ffc107; display: flex; align-items: center; margin-bottom: 5px;">
+                <mat-icon style="font-size: 18px; height: 18px; width: 18px;">star</mat-icon>
+                <span style="font-weight: bold; margin-left: 4px;">{{ t.rating | number:'1.1-1' }}</span>
+            </div>
+
+            <p class="details">
+                <i style="color: #666; display: block; margin-bottom: 5px;">{{ t.description | slice:0:40 }}...</i>
+
+                <b>Tip:</b> {{t.type?.name}}<br>
+                <b>Uzrast:</b> {{ t.prikazUzrasta }} god.<br>
+
+                <b>Proizvedeno:</b> {{ t.productionDate | date:'dd.MM.yyyy' }}<br>
+
+                <b>Namenjeno:</b>
+                <span [style.color]="t.tacanPol === 'male' ? 'blue' : (t.tacanPol === 'female' ? '#E91E63' : 'green')">
+                    {{ t.tacanPol === 'male' ? 'Dečacima' : (t.tacanPol === 'female' ? 'Devojčicama' : 'Univerzalno') }}
+                </span>
+            </p>
+            <h3 class="price">{{t.price | number}} RSD</h3>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button matButton color="primary" [routerLink]="['/order', t.toyId]">
+                <mat-icon>description</mat-icon> Detalji
+            </button>
+        </mat-card-actions>
+    </mat-card>
     }
-</ul>
+</div>
+}

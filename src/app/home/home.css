@@ -1,0 +1,63 @@
+.toy-card {
+    width: 20rem;
+}
+
+.card-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.card-content {
+    margin-top: 10px;
+}
+
+.loading-card {
+    max-width: 420px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loading-img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80px;
+}
+/* Kontejner filtera - Pomeren udesno */
+.filter-lenta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end; /* OVO JE ZA DESNU STRANU */
+    align-items: center;
+    gap: 15px;
+    padding: 15px 40px;
+    background: #ffffff;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.f-item { width: 185px; }
+.f-item-small { width: 120px; }
+
+/* Raspored kartica */
+.card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.toy-card {
+    width: 310px;
+    transition: transform 0.2s;
+}
+
+.toy-card:hover { transform: translateY(-5px); }
+
+.title { color: #2c3e50; font-size: 1.3em; margin-bottom: 8px; }
+.details { font-size: 0.9em; color: #555; line-height: 1.6; }
+.price { color: #d35400; font-weight: bold; margin-top: 12px; }
+.reviews { display: flex; align-items: center; gap: 5px; color: #f39c12; font-size: 0.85em; }

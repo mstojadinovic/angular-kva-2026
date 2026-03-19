@@ -1,0 +1,77 @@
+@if (toy()) {
+<div class="details-wrapper">
+    <mat-card class="details-card">
+        <mat-card-content>
+            <img [src]="'https://toy.pequla.com' + toy()!.imageUrl" class="details-img">
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="details-card">
+        <mat-card-content>
+            <h1>{{ toy()?.name }}</h1>
+
+            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 20px;">
+                @for (star of [1, 2, 3, 4, 5]; track star) {
+                    <mat-icon 
+                        (click)="rateToy(star)"
+                        [style.cursor]="'pointer'"
+                        [style.color]="(toy()?.rating || 3.0) >= star ? '#ffc107' : '#e0e0e0'"
+                        style="font-size: 24px; width: 24px; height: 24px;">
+                        {{ (toy()?.rating || 3.0) >= star ? 'star' : 'star_border' }}
+                    </mat-icon>
+                }
+                <span style="font-size: 16px; font-weight: bold; margin-left: 8px; color: #555;">
+                    {{ (toy()?.rating || 3.0) | number:'1.1-1' }}
+                </span>
+            </div>
+
+            <mat-list>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>border_color</mat-icon>
+                    <div matListItemTitle>{{ toy()?.description }}</div>
+                    <div matListItemLine>Opis</div>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>info</mat-icon>
+                    <div matListItemTitle>{{ toy()?.type?.name }}</div>
+                    <div matListItemLine>Tip</div>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>cake</mat-icon>
+                    <div matListItemTitle>{{ toy()?.ageGroup?.name }} godina</div>
+                    <div matListItemLine>Uzrast</div>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>groups_3</mat-icon>
+                    <div matListItemTitle>{{ toy()?.targetGroup }}</div>
+                    <div matListItemLine>Ciljna grupa</div>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>calendar_month</mat-icon>
+                    <div matListItemTitle>{{ toy()?.productionDate }}</div>
+                    <div matListItemLine>Datum proizvodnje</div>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>sell</mat-icon>
+                    <div matListItemTitle>{{ toy()?.price }} dinara</div>
+                    <div matListItemLine>Cena</div>
+                </mat-list-item>
+            </mat-list>
+
+        </mat-card-content>
+        
+        @if (authService.getActiveUser()) {
+        <mat-card-actions>
+            <a [routerLink]="'/details/' + (toy()?.id || toy()?.toyId) + '/checkout'" mat-raised-button color="primary">
+                <mat-icon>shopping_cart</mat-icon> Rezervišite
+            </a>
+        </mat-card-actions>
+        }
+    </mat-card>
+</div>
+}

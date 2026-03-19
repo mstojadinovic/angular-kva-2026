@@ -1,0 +1,62 @@
+@if(toy() != null) {
+<div class="d-flex gap-10 ">
+
+    <mat-card class="flex-card">
+        <img mat-card-image [src]="'https://toy.pequla.com' + toy()!.imageUrl"
+            style="max-height: 400px; object-fit: cover;" />
+
+        <mat-card-content>
+            <h2>{{toy()!.name}}</h2>
+            <div style="color: #ffc107; display: flex; align-items: center; margin-bottom: 5px;">
+                <mat-icon style="font-size: 18px; height: 18px; width: 18px;">star</mat-icon>
+                <span style="font-weight: bold; margin-left: 4px;">{{ toy()!.rating | number:'1.1-1' }}</span>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="flex-card">
+        <mat-card-content>
+            <h3>Opis igračke:</h3>
+            <p style="margin-bottom: 20px; color: #555; line-height: 1.5;">{{toy()!.description}}</p>
+
+
+            <p><strong>Tip:</strong> {{toy()!.type.name}}</p>
+            <p><strong>Uzrast:</strong> {{toy()!.ageGroup.name}}</p>
+
+            <p><strong>Proizvedeno:</strong> {{toy()!.productionDate | date:'dd.MM.yyyy'}}</p>
+
+            <p><strong>Ciljna grupa:</strong>
+                <span
+                    [style.color]="toy()!.targetGroup === 'male' ? 'blue' : (toy()!.targetGroup === 'female' ? '#e91e63' : '#2e7d32')">
+                    {{toy()!.targetGroup === 'male' ? 'Dečaci' : (toy()!.targetGroup === 'female' ? 'Devojčice' :
+                    'Univerzalno')}}
+                </span>
+            </p>
+
+            <h3 style="color: #2e7d32;">Cena: {{toy()!.price | number}} RSD</h3>
+
+
+
+            <mat-form-field style="width: 100%;">
+                <mat-label>Količina</mat-label>
+                <input matInput type="number" [(ngModel)]="order.count" min="1">
+            </mat-form-field>
+
+            <h3 style="text-align: right;">
+                Ukupno: <span style="color: #d32f2f;">{{calculateTotal() | number}} RSD</span>
+            </h3>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button matButton color="primary" (click)="placeOrder()">
+                <mat-icon>check_circle</mat-icon> REZERVIŠI
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+} @else {
+<div style="text-align: center; margin-top: 100px;">
+    <h2 style="color: #666;">Učitavanje podataka o igrački...</h2>
+</div>
+}
